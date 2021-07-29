@@ -1,8 +1,19 @@
 import socket
 import csv
 import re
-import dweepy
-from influxdb import InfluxDBClient
+import paho.mqtt.client as mqtt
+import time
+
+##########################################################################################################################
+moxa_ip = '192.168.2.153' #IP address of the Moxa IP-2-Serial converter
+moxa_port = 4001 #TCP port used on the Moxa IP-2-Serial converter
+mqtt_ip = '192.168.2.90' #IP address of the MQTT broker
+mqtt_port = 1883 #Port used on the IP of the MQTT broker
+mqtt_user = 'mqtt' #mqtt userid
+mqtt_password = 'mqtt' #mqtt password
+csvfile = r"/home/andyg/projects/omronplc_via_serial/PLC_addresses.csv" #r in front converts to raw string. Input file.
+##########################################################################################################################
+
 
 class PlcObject:
     """ DOCSTRING: the PLC Object Class
@@ -91,9 +102,12 @@ class PlcObject:
             return (self.response[7:-4])
 
     def send_command(self):
+        
+        global moxa_ip
+        global moxa_port
 
-        self.host = '192.168.2.153'
-        self.port = 4001
+        self.host = moxa_ip #IP address of the Moxa IP-2-Serial converter
+        self.port = moxa_port #TCP port used on the Moxa IP-2-Serial converter
 
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
@@ -115,14 +129,12 @@ class PlcObject:
 def read_plcobjects():
     """ Import CSV and convert to list of objects """
     plcobjects = []
-
-    csvfile = r"/volume1/web/PLC_adressen.csv"
-    # 'r' in front converts to raw string.
+    global csvfile
 
     with open(csvfile, newline='') as csvfile:
         csvlines = csv.reader(csvfile, delimiter=';')
         for row in csvlines:
-            plcobject = PlcObject(row[0], row[2])  # Description, Address
+            plcobject = PlcObject(row[0].lower(), row[2])  # Description.(lowercased), Address
             plcobjects.append(plcobject)
 
     return plcobjects
@@ -138,41 +150,22 @@ def hex2bin(s):
         bits += hex_table[int(s[i], base=16)]
     return bits
 
-def write_to_influxdb(input_dict):
-    influxdb_ip = "192.168.2.152"
-    influxdb_port = 8086
-    influxdb_user = ""
-    influxdb_password = ""
-    influxdb_database = "dweet_plc"
+def on_publish(client, userdata, mid):
+    #print("mqtt data published with message id:" + str(mid))
+    pass
 
-    """ Try to connect to the InfluxDB"""
-    try:
-        flux_client = InfluxDBClient(influxdb_ip,
-                                     influxdb_port,
-                                     influxdb_user,
-                                     influxdb_password,
-                                     influxdb_database)
-    except:
-        flux_client = None
-        print("[INFO] Failed to connect to InfluxDB")
+def on_connect(client, userdata, flags, rc):
+    if rc != 0:
+        print("err: mqtt client connected with result code: " + str(rc))
+    pass
 
-    """ Write data to influxDB"""
-    try:
-        if flux_client is not None:
-            metrics = {}
-            tags = {}
-            fields = {}
-            metrics['measurement'] = "dweet_plc"
-            tags['source'] = "192.168.2.152"
-            metrics['tags'] = tags
-            metrics['fields'] = input_dict
-            flux_client.write_points([metrics])
-            flux_client.close()
-    except Exception as err:
-        print("[ERROR] %s" % err)
+def on_disconnect(client, userdata, rc):
+    if rc != 0:
+        print("err: mqtt client disconnect with result code: " + str(rc))
+    pass
+
 
 # Program
-
 plcobjects = read_plcobjects()
 
 plc_previous_command_with_fcs = ""
@@ -193,21 +186,35 @@ for plcobject in plcobjects:
         plc_previous_command_with_fcs = plcobject.command_with_fcs
         plc_previous_response = plcobject.response
 
-    # Only put interesting stuff in the dweet dict
-    # if (plcobject.area == "IR" and plcobject.decoded_response == "1") or plcobject.area == "DM":
-    result_dict[plcobject.description] = int(plcobject.decoded_response) #Convert to integers for InfluxDB/Grafana
+    # Only put interesting stuff in the dict, only interested in outputs (lights)
+    if (plcobject.area == "IR") and ("knop" not in plcobject.description):
+        result_dict[plcobject.description] = int(plcobject.decoded_response) #Convert to integers for InfluxDB/Grafana
 
-#write_to_influxdb(result_dict)
-dweepy.dweet_for('angeraer-plc', result_dict)
+# Initialize the MQTT client that should connect to the Mosquitto broker on Home Assistant
+client = mqtt.Client()
+client.on_connect = on_connect #bind call back function
 
-# get_dweet()
-#     url = dweepy.get_latest_dweet_for(thing)
-#     dict = url[0]
-#     content = dict['content']
-#     longdate = dict['created']
-#     date = longdate[:10]
-#     time = longdate[11:19]
-#     print("Date:", date)
-#     print("Time:", time)
-#     print(content)
-#     # print(content.values())
+connOK = False
+while (connOK == False):
+    try:
+        client.username_pw_set(username= mqtt_user, password = mqtt_password)
+        client.connect(mqtt_ip, mqtt_port, 60)
+        connOK = True
+    except:
+        print("err: wait loop for mqtt connection...")
+        connOK = False
+    time.sleep(2)
+
+client.on_publish = on_publish #bind call back function
+for key in result_dict:
+    #publish on mqtt broker in format for Home Assistant auto discovery
+    ret = client.publish("homeassistant/binary_sensor/" + key + "/config", "{" + '"name":"' + key + '","device_class":"light","payload_on":"ON","payload_off":"OFF","state_topic":"homeassistant/binary_sensor/' + key + '/state","value_template":' + '"{{ value_json.state }}"}', retain=True)
+    if result_dict[key] == 1:
+        ret = client.publish("homeassistant/binary_sensor/" + key + "/state", "{" + '"state"' + ":" + '"ON"}', retain=True)
+        
+    elif result_dict[key] == 0:
+        ret = client.publish("homeassistant/binary_sensor/" + key + "/state", "{" + '"state"' + ":" + '"OFF"}', retain=True)
+        
+
+client.on_disconnect = on_disconnect #bind call back function
+client.disconnect()
