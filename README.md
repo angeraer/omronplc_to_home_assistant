@@ -38,5 +38,5 @@ Light2;BOOL;191.02;This is light2;
 
 The code will connect to the PLC. Read & validate the data and send the results to the MQTT broker.
 
-[Screenshot MQTT config message](docu/mqtt_1.png)
-[Screenshot MQTT state message](docu/mqtt_2.png)
+[Screenshot MQTT config message](Docu/mqtt_1.png)
+[Screenshot MQTT state message](Docu/mqtt_2.png)
