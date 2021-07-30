@@ -40,3 +40,5 @@ The code will connect to the PLC. Read & validate the data and send the results 
 
 [Screenshot MQTT config message](Docu/mqtt_1.png)
 [Screenshot MQTT state message](Docu/mqtt_2.png)
+
+
