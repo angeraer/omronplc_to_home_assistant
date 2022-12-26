@@ -42,13 +42,34 @@ Terras;A_Buiten_Achtergevel_Togglebit2;HR5.14;A_Terras_Gevel_Voordeur;191.03
 191.01 -> represents the address in memory of the PLC. If this bit is 1, the light is ON. If this bit is 0 the light is OFF.  
 The code will connect to the PLC. Read & validate the data and send the results to the MQTT broker.  
 
+The payload looks like this:
+
+MQTT topic: homeassistant/switch/a_portaal/config
+{
+  "name": "a_portaal",
+  "payload_on": "@00SC0252*;@00KSHR  00050641*;@00SC0353*",
+  "payload_off": "@00SC0252*;@00KRHR  00050640*;@00SC0353*",
+  "state_topic": "homeassistant/switch/a_portaal/state",
+  "command_topic": "homeassistant/switch/a_portaal/set",
+  "state_on": "ON",
+  "state_off": "OFF",
+  "icon": "mdi:lightbulb",
+  "value_template": "{{ value_json.state }}",
+  "unique_id": "a_portaal",
+  "device": {
+    "name": "a_portaal",
+    "identifiers": "HR5.06:0"
+  }
+}
+
+MQTT topic: homeassistant/switch/a_portaal/state
+{
+  "state": "OFF"
+}
+
 ***
 
 ## Screenshots in Docu:
-The MQTT config message, needed for Home Assistant to understand the device settings:  
-![Screenshot MQTT config message](Docu/mqtt_1.png)  
-The MQTT state message, needed for Home Assistant to know the state:  
-![Screenshot MQTT state message](Docu/mqtt_2.png)  
 The Moxa Serial-2-IP connector  
 ![Screenshot showing the Moxa TCP Server mode settings](Docu/moxa_settings_serial_for_omron_plc.png)  
 The Moxa Serial-2-IP connector  TCP Server mode settings  
