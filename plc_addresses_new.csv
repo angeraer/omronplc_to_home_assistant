@@ -1,0 +1,55 @@
+Portaal;A_Portaal_Togglebit2;HR5.06;A_Portaal;171.12
+Terras;A_Buiten_Achtergevel_Togglebit2;HR5.14;A_Terras_Gevel_Oprit;191.02
+Terras;A_Buiten_Achtergevel_Togglebit2;HR5.14;A_Terras_Gevel_Voordeur;191.03
+Terras;A_Buiten_Togglebit2;HR4.12;A_Terras_Scheidingsmuur_Links;191.11
+Terras;A_Buiten_Togglebit2;HR4.12;A_Terras_Scheidingsmuur_Rechts;191.12
+Eetkamer;A_Eetkamer_Togglebit2;HR0.03;A_Eetkamer1;191.06
+Eetkamer;A_Eetkamer_Togglebit2;HR0.03;A_Eetkamer2;191.07
+Eetkamer;A_Eetkamer_Togglebit2;HR0.03;A_Eetkamer3;180.04
+Keuken;A_Keuken_Togglebit2;HR1.07;A_Keuken1;191.14
+Living Wand;A_Living_wand_Togglebit2;HR5.10;A_Living_Wand;191.01
+Nachthal;B_Nachthal_LED_Togglebit2;HR1.11;A_Trapleuning1;171.05
+Nachthal;B_Nachthal_LED_Togglebit2;HR1.11;A_Trapleuning2;171.04
+Nachthal;B_Nachthal_LED_Togglebit2;HR1.11;B_Nachthal_LED1;171.08
+Nachthal;B_Nachthal_LED_Togglebit2;HR1.11;B_Nachthal_LED2;180.07
+Nachthal;B_Nachthal_LED_Togglebit2;HR1.11;B_Nachthal_LED3;180.06
+Nachthal;B_Nachthal_LED_Togglebit2;HR1.11;B_Nachthal_LED4;190.01
+Nachthal;B_Nachthal_LED_Togglebit2;HR1.11;B_Nachthal_LED5;171.01
+Nachthal;B_Nachthal_LED_Togglebit2;HR1.11;B_Nachthal_LED6;171.03
+Inkomhal;A_Inkomhal_Togglebit2;HR1.09;A_Inkomhal1;190.00
+Inkomhal;A_Inkomhal_Togglebit2;HR1.09;A_Inkomhal2;180.05
+Inkomhal;A_Inkomhal_Togglebit2;HR1.09;A_Vestiaire;171.02
+Toilet Beneden;A_WC_Togglebit2;HR0.09;A_WC;191.05
+Speelhoek LED;A_Werkruimte_TL_Togglebit2;HR5.12;A_Werkruimte_TL;171.09
+Speelhoek Spot;A_Werkruimte_Togglebit2;HR0.11;A_Werkruimte1;171.00
+Speelhoek Spot;A_Werkruimte_Togglebit2;HR0.11;A_Werkruimte2;171.10
+Speelhoek Spot;A_Werkruimte_Togglebit2;HR0.11;A_Werkruimte3;171.13
+Badkamer;B_Badkamer_Togglebit4;HR0.15;B_Badkamer1;180.11
+Badkamer;B_Badkamer_Togglebit4;HR0.15;B_Badkamer2;180.00
+Badkamer;B_Badkamer_Togglebit4;HR0.15;B_Badkamer_Lavabo;171.14
+Douche;B_Badkamer_Togglebit2;HR2.03;B_Badkamer_douche_1_2;180.02
+Dressing;B_Dressing_Togglebit2;HR1.13;B_Dressing_TL;180.08
+Nachthal;B_Nachthal_Togglebit2;HR0.01;B_Nachthal1;181.08
+Zolder - Trap;C_Zolder_Groot_1_Togglebit2;HR6.08;B_Nachthal2;181.09
+Nachthal;B_Nachthal_Togglebit2;HR0.01;B_Nachthal3;190.10
+Nachthal;B_Nachthal_Togglebit2;HR0.01;B_Nachthal4;190.11
+Nachthal;B_Nachthal_Togglebit2;HR0.01;B_Nachthal5;190.12
+Nachthal;B_Nachthal_Togglebit2;HR0.01;A_Trap;171.15
+Slaapkamer - Tuur;B_Slaapkamer_Tuur_Togglebit2;HR0.13;B_Slaapkamer_Tuur;180.10
+Slaapkamer;B_Slaapkamer_Togglebit2;HR0.05;B_Slaapkamer1;180.13
+Slaapkamer;B_Slaapkamer_Togglebit2;HR0.05;B_Slaapkamer2;180.12
+Terras - Boven;B_Terras_Togglebit2;HR1.15;B_Terras;191.10
+Vide - Plafond;A_Vide_Plafond_Togglebit2;HR6.10;B_Vide_Plafond;180.09
+Vide - Wand;A_Vide_Wand_Togglebit2;HR7.02;B_Vide_Wand;190.15
+WC - Boven;B_WC_Togglebit2;HR0.07;B_WC;180.01
+WC - Boven;B_WC_Ventilator_StartBit;HR4.08;B_WC_Ventilator;190.02
+Zolder - Stookruimte;C_Stookruimte_Togglebit2;HR1.05;C_Stookruimte_TL;180.03
+Zolder - Dak;C_Stookruimte_Togglebit2;HR1.05;D_Zolder;190.06
+Zolder - Berging;C_Stookruimte_Togglebit2;HR1.05;C_Zolder_onder_dak_TL;171.07
+Zolder - Groot;C_Zolder_Groot_2_Togglebit2;HR1.03;C_Zolder_Groot1;190.07
+Zolder - Groot;C_Zolder_Groot_3_Togglebit2;HR6.02;C_Zolder_Groot2;180.14
+Zolder - Groot;C_Zolder_Groot_4_Togglebit2;HR6.04;C_Zolder_Groot3;171.06
+Zolder - Groot;C_Zolder_Groot_5_Togglebit2;HR6.06;C_Zolder_Groot4;180.15
+Zolder - Klein;C_Zolder_Klein1_Togglebit2;HR1.01;C_Zolder_Klein1;190.04
+Zolder - Klein;C_Zolder_Klein2_Togglebit2;HR6.12;C_Zolder_Klein2;190.05
+Zolder - Klein;C_Zolder_Klein3_Togglebit2;HR6.14;C_Zolder_Klein3;190.03
