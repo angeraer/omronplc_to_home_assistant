@@ -45,6 +45,7 @@ The code will connect to the PLC. Read & validate the data and send the results 
 The payload looks like this:
 
 MQTT topic: homeassistant/switch/a_portaal/config
+```json
 {
   "name": "a_portaal",
   "payload_on": "@00SC0252*;@00KSHR  00050641*;@00SC0353*",
@@ -61,12 +62,13 @@ MQTT topic: homeassistant/switch/a_portaal/config
     "identifiers": "HR5.06:0"
   }
 }
-
+```
 MQTT topic: homeassistant/switch/a_portaal/state
+```json
 {
   "state": "OFF"
 }
-
+```
 ***
 
 ## Screenshots in Docu:
