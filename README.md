@@ -22,7 +22,7 @@ This Moxa device enables me to talk to the PLC over TCP.
                                                      |
                                                      |
                                                      |                                                                                                 
-                                        Home assistant (Raspberry Pi 4)                                      
+                                        Home assistant (VM)                                  
 
 ```
 The script will send the 'read' commands towards the PLC to read out the bit state data. I uses a CSV file as input.  
@@ -32,9 +32,10 @@ It simply contains the list of all BOOL bits that represent the state of an outp
 ## CSV input file
 
 ```bash
-Name;Data Type;Address;Comment;Extra
-Light1;BOOL;191.01;This is light1;
-Light2;BOOL;191.02;This is light2;
+Location;Input;Input Address;Output;Output Address
+Portaal;A_Portaal_Togglebit2;HR5.06;A_Portaal;171.12
+Terras;A_Buiten_Achtergevel_Togglebit2;HR5.14;A_Terras_Gevel_Oprit;191.02
+Terras;A_Buiten_Achtergevel_Togglebit2;HR5.14;A_Terras_Gevel_Voordeur;191.03
 ```
 
 ## From bit data to MQTT to Home Assistant
