@@ -124,21 +124,23 @@ class PlcObject:
 
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-            s.connect((self.host, self.port))
-            s.send(self.get_command_with_fcs.encode())  # command 'Status'
-            s.send(b'\x0d\x0a')  # send 'newline' to complete command
+            try:
+                s.connect((self.host, self.port))
+                s.send(self.get_command_with_fcs.encode())  # command 'Status'
+                s.send(b'\x0d\x0a')  # send 'newline' to complete command
 
-            result = []
-            while 1:
-                data = s.recv(1)  # recieve one byte at a time.
-                result.append(data.decode())
-                if (data == b'\r'): break
-                if not data: break
+                result = []
+                while 1:
+                    data = s.recv(1)  # recieve one byte at a time.
+                    result.append(data.decode())
+                    if (data == b'\r'): break
+                    if not data: break
+                s.close()
+                return ''.join(result)
 
-
-        s.close()
-        return ''.join(result)
-
+            except socket.error as error:
+                print("Moxa connection failed")
+     
 
 def calc_fcs(s):
     fcs_value = 0

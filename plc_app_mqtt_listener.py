@@ -19,31 +19,31 @@ def on_message(client, userdata, message):
     # print("received topic: " ,str(message.topic))
     # print("received retain: " ,str(message.retain))
     # print("received qos: " ,str(message.qos))
-    splitser = str(message.payload.decode("utf-8")).split(';')
-    for x in splitser:
-        print(x)
-        print(send_plc_command(x))
+    plc_command = str(message.payload.decode("utf-8")).split(';')
+    send_plc_command(plc_command)
 
 
 def send_plc_command(command):
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-        s.connect((plc_app_settings.moxa_ip, plc_app_settings.moxa_port))
-        s.send(command.encode())  # command 'Status'
-        s.send(b'\x0d\x0a')  # send 'newline' to complete command
+        try: 
+            s.connect((plc_app_settings.moxa_ip, plc_app_settings.moxa_port))
+            for plc_command in command:
+                s.send(plc_command.encode())  # command 'Status'
+                s.send(b'\x0d\x0a')  # send 'newline' to complete command
+                result = []
+                while 1:
+                    data = s.recv(1)  # recieve one byte at a time.
+                    result.append(data.decode())
+                    if (data == b'\r'): break
+                    if not data: break
+            s.close()
+        except socket.error as error:
+            print("Connection Failed")  
 
-        result = []
-        while 1:
-            data = s.recv(1)  # recieve one byte at a time.
-            result.append(data.decode())
-            if (data == b'\r'): break
-            if not data: break
 
-
-    s.close()
-    return ''.join(result)
-
+# Main Program
 # Initialize the MQTT client that should connect to the Mosquitto broker on Home Assistant
 client = mqtt.Client()
 client.on_connect = on_connect #bind call back function
